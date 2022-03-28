@@ -1,6 +1,6 @@
 - 👋 Hi, I’m @x3beche
-- 👀 I’m interested in Cryptology, Communication Systems, Hardwares
-- 🌱 I’m currently learning Embedded Programming
+- 👀 I’m interested in Cryptology, Decentralized Networks, Communication (nrf24l01, socket, hackrf), Embedded Programming (STM32, ATmega), GUI Development, API Managment, Web, Big Data, Machine Learning
+- 🌱Programming Languages : Python, C
 - 📫 You can reach me at the mail address in my profile
 
 <p align="center">
