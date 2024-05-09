@@ -1,6 +1,2 @@
-<p align="center">
-<a href="https://github.com/x3beche">
-<img height="180em" align="center" src="https://github-readme-stats.vercel.app/api?username=x3beche&show_icons=true&locale=en&theme=dark&include_all_commits=true&count_private=true" alt="x3beche"/>
-<img height="180em" align="center" src="https://github-readme-stats.vercel.app/api/top-langs?username=x3beche&show_icons=true&locale=en&layout=compact&langs_count=8&theme=dark" alt="x3beche"/>
-</p>
-<!--- https://github.com/anuraghazra/github-readme-stats -->
+| <a href="https://github.com/anuraghazra/github-readme-stats"><img align="center" src="https://github-readme-stats.vercel.app/api?username=anuraghazra&show_icons=true&include_all_commits=true&theme=buefy&hide_border=true" alt="Anurag's github stats" /></a> | <a href="https://github.com/anuraghazra/github-readme-stats"><img align="center" src="https://github-readme-stats.vercel.app/api/top-langs/?username=anuraghazra&layout=compact&theme=buefy&hide_border=true" /></a> |
+| ------------- | ------------- |
