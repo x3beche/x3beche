@@ -13,7 +13,6 @@ Here, I am throwing some of the projects and things I want to write.
 ### Projects in Progress
 - [Marlene Fusion Crawler](https://github.com/x3beche/marlene-fusion-crawler)
 
----
 
 ## I Have Worked With These Technologies
 
@@ -37,7 +36,6 @@ Here, I am throwing some of the projects and things I want to write.
 
 > **Note:** I believe the software libraries/frameworks I know exceed 200+, but unfortunately, I couldn't list them all.
 
----
 
 ## I Am Learning These Technologies
 
