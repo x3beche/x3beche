@@ -4,7 +4,7 @@ Here, I am throwing some of the projects and things I want to write.
 
 ### Companies I Develop Software For
 - [Update.team](https://update.team)
-- [App.kraftgase.de](https://app.kraftgase.de/)
+- [App.kraftgase.de](https://app.kraftgase.de/) (2020-2022)
 
 ### Competitions
 - **Teknofest Hyperloop Development 2022** (Finalist)
