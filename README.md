@@ -2,8 +2,6 @@
 
 Here, I am throwing some of the projects and things I want to write.
 
----
-
 ### Companies I Develop Software For
 - [Update.team](https://update.team)
 - [App.kraftgase.de](https://app.kraftgase.de/)
