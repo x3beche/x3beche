@@ -3,7 +3,7 @@
 Here, I am throwing some of the projects and things I want to write.
 
 ### Companies I Develop Software For
-- [Update.team](https://update.team)
+- [Update.team](https://update.team) (2022-Still going on)
 - [App.kraftgase.de](https://app.kraftgase.de/) (2020-2022)
 
 ### Competitions
