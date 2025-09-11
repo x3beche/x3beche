@@ -17,7 +17,7 @@ Here, I am throwing some of the projects and things I want to write.
 ## I Have Worked With These Technologies
 
 - **Programming Languages:** Python, C, C++ (Middle-Level), JavaScript, TypeScript
-- **Development Boards:** PIC Series, STM32, ATmega, ESP32, RP2040
+- **Development Boards:** PIC Series, STM32, ATmega, ESP32, RP2040, Texas Instruments Series
 - **Embedded Programming:** FreeRTOS, esp-idf
 - **Hardware Design:** Verilog, RISC-V, Vivado, Quartus, BASYS3
 - **Robotics:** FPV Drones, Autonomous Cars, Ground Stations, ROS 2
