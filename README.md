@@ -16,8 +16,8 @@ Electrical & Electronics Engineering undergraduate at Istanbul Medipol Universit
 
 - **Aselsan** — System Engineering Intern, Microelectronics & Optics *(Aug 2025)*
 - **Baykar** — Embedded Software Intern, Propulsion & Motor Systems *(Jun 2025)*
-- **TÜBİTAK BİLGEM BTE** — Embedded Software Developer *(Jul 2024)*
-- **TÜBİTAK BİLGEM TÜTEL** — Digital Designer, RV32I RISC-V CPU in Verilog *(Jul 2023)*
+- **TÜBİTAK BİLGEM BTE** — Embedded Software Developer Intern *(Jul 2024)*
+- **TÜBİTAK BİLGEM TÜTEL** — Digital Designer Intern, RV32I RISC-V CPU in Verilog *(Jul 2023)*
 - **Update Solutions** — Fullstack Developer, France (remote) *(2023–2025)*
 - **Kraftgase** — Fullstack Developer, Germany (remote) *(2021–2023)*
 
