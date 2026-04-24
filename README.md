@@ -1,31 +1,45 @@
-# Welcome to My Safe Zone
+# Emirhan Pehlevan
 
-Here, I am throwing some of the projects and things I want to write.
+Electrical & Electronics Engineering undergraduate at Istanbul Medipol University, focused on embedded Linux, low-level C/C++, and hardware–software integration.
 
-### Companies I Develop Software For
-- [Update.team](https://update.team) (2022-2025)
-- [App.kraftgase.de](https://app.kraftgase.de/) (2020-2022)
+🌐 [x3beche.github.io](https://x3beche.github.io/)
+
+---
+
+### Current
+
+- **Embedded Linux Research Scholar** — TÜBİTAK BİLGEM *(Nov 2025 – Present)*
+- **Undergraduate Research Assistant** — Istanbul Medipol University *(2025 – Present)*
+  TÜSEB A1-supported project: a low-cost pathology tissue slide scanner (STM32 + FreeRTOS motion control, FastAPI/MongoDB backend, Angular frontend).
+
+### Experience
+
+- **Aselsan** — System Engineering Intern, Microelectronics & Optics *(Aug 2025)*
+- **Baykar** — Embedded Software Intern, Propulsion & Motor Systems *(Jun 2025)*
+- **TÜBİTAK BİLGEM BTE** — Embedded Software Developer *(Jul 2024)*
+- **TÜBİTAK BİLGEM TÜTEL** — Digital Designer, RV32I RISC-V CPU in Verilog *(Jul 2023)*
+- **Update Solutions** — Fullstack Developer, France (remote) *(2023–2025)*
+- **Kraftgase** — Fullstack Developer, Germany (remote) *(2021–2023)*
 
 ### Competitions
-- **Teknofest Hyperloop Development 2022** (Finalist)
-- **Teknofest Digital Technologies in Industry 2023** (Finalist)
 
-### Projects in Progress
-- [Marlene Fusion Crawler](https://github.com/x3beche/marlene-fusion-crawler)
+- **Teknofest 2023** — Finalist, Digital Technologies in Industry (Rakun Robotics)
+- **Teknofest 2022** — Finalist, Software Lead (Momentum Hyperloop)
 
+### Projects
 
-## I Have Worked With These Technologies
+- **[embedded-deck](https://x3beche.github.io/embedded-deck/)** — Turkish technical reference on embedded Linux and systems programming. 296 pages, zero dependencies.
+- **[ai-deck](https://x3beche.github.io/ai-deck/)** — Notes on transformers, LLM tooling, and modern NLP architectures.
+- **[AX45-S & GhostProtocol](https://github.com/x3beche/AX45-S)** — Custom cryptographic algorithm and long-range wireless protocol over nRF24L01.
 
-- **Programming Languages:** Python, C, C++ (Middle-Level), JavaScript, TypeScript
-- **Development Boards:** PIC Series, STM32, ATmega, ESP32, RP2040, Texas Instruments Series
-- **Embedded Programming:** FreeRTOS, esp-idf
-- **Hardware Design:** Verilog, RISC-V, Vivado, Quartus, BASYS3
-- **Robotics:** FPV Drones, Autonomous Cars, Ground Stations, ROS 2
-- **Front-End:** HTML, CSS, Bootstrap, jQuery, Angular
-- **Back-End:** FastAPI, Flask, Django, SocketIO, RQ, NGINX
-- **Databases:** Redis, MongoDB, MySQL
-- **GUI Development:** PyQt6
-- **Modeling:** Fusion 360
+### Tech
 
-| <a href="https://github.com/anuraghazra/github-readme-stats"><img align="center" src="https://github-readme-stats.vercel.app/api?username=x3beche&show_icons=true&include_all_commits=true&theme=dark&hide_border=true" alt="Anurag's github stats" /></a> | <a href="https://github.com/anuraghazra/github-readme-stats"><img align="center" src="https://github-readme-stats.vercel.app/api/top-langs/?username=x3beche&layout=compact&theme=dark&hide_border=true" /></a> |
-| ------------- | ------------- |
+**Embedded:** STM32, ESP32, ATmega, FreeRTOS, Embedded Linux, ESP-IDF
+**Hardware:** Verilog, RISC-V, Vivado, PCB Design, Fusion 360
+**Languages:** C, C++, Python, JavaScript, TypeScript
+**Web:** FastAPI, Django, React, Angular, MongoDB, Redis, NGINX
+**Protocols:** TLS/SSL, BLE, Wi-Fi, GPS RTK
+
+### Contact
+
+📧 [emirpehlevan@outlook.com](mailto:emirpehlevan@outlook.com) · 💼 [LinkedIn](https://www.linkedin.com/in/emirhanpehlevan/) · 📍 Istanbul, Türkiye
