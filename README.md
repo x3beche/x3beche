@@ -30,30 +30,7 @@ Embedded Linux · Low-level C/C++ · Hardware–software integration
 
 <div align="center">
 
-[![GitHub followers](https://img.shields.io/github/followers/x3beche?style=for-the-badge&logo=github&labelColor=0d1117&color=00ff88)](https://github.com/x3beche)
-[![GitHub stars](https://img.shields.io/github/stars/x3beche?style=for-the-badge&logo=github&labelColor=0d1117&color=00ff88&affiliations=OWNER)](https://github.com/x3beche)
-[![Repos](https://img.shields.io/badge/dynamic/json?url=https://api.github.com/users/x3beche&query=public_repos&style=for-the-badge&label=repos&labelColor=0d1117&color=00ff88&logo=github)](https://github.com/x3beche?tab=repositories)
-
-</div>
-
-<div align="center">
-
 [![GitHub Streak](https://streak-stats.demolab.com/?user=x3beche&theme=dark&hide_border=true&background=0d1117&ring=00ff88&fire=00ff88&currStreakLabel=00ff88&sideLabels=c9d1d9&dates=64748b)](https://github.com/x3beche)
-
-</div>
-
-<div align="center">
-
-<!--
-  Stats & top languages cards require a self-hosted instance (public Vercel is down).
-  Setup (~5 min, free):
-  1. Fork https://github.com/anuraghazra/github-readme-stats
-  2. Deploy on vercel.com — add env var PAT_1 = your GitHub personal access token
-  3. Replace YOUR_VERCEL_DOMAIN with your deployed URL and remove this comment
--->
-
-<img src="https://YOUR_VERCEL_DOMAIN/api?username=x3beche&show_icons=true&theme=dark&hide_border=true&bg_color=0d1117&title_color=00ff88&icon_color=00ff88&text_color=c9d1d9" height="170"/>
-<img src="https://YOUR_VERCEL_DOMAIN/api/top-langs/?username=x3beche&layout=compact&theme=dark&hide_border=true&bg_color=0d1117&title_color=00ff88&text_color=c9d1d9" height="170"/>
 
 </div>
 
