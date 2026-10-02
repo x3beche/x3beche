@@ -9,4 +9,7 @@ Embedded Linux, low-level C/C++ and hardware–software integration. Experience,
 my Turkish technical decks (embedded Linux, kernel, networking, AI, …) are on
 [x3beche.github.io](https://x3beche.github.io/).
 
-[![GitHub Streak](https://streak-stats.demolab.com/?user=x3beche&theme=dark&hide_border=true&background=0d1117&ring=00ff88&fire=00ff88&currStreakLabel=00ff88&sideLabels=c9d1d9&dates=64748b)](https://github.com/x3beche)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/stats-dark.svg">
+  <img alt="GitHub katkı istatistikleri" src="assets/stats-light.svg">
+</picture>
