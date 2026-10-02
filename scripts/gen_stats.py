@@ -10,6 +10,7 @@ from html import escape
 USER = "x3beche"
 SITE = "https://x3beche.github.io/"
 OUT = sys.argv[1] if len(sys.argv) > 1 else "."
+os.makedirs(OUT, exist_ok=True)
 
 
 def gql(query):
