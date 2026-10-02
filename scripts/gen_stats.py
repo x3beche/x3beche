@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Profile stats cards: assets/card-*-{dark,light}.svg from GitHub GraphQL + x3beche.github.io.
+"""Profile stats card: stats-dark.svg / stats-light.svg from GitHub GraphQL + x3beche.github.io.
 
 Needs GH_TOKEN (a token that can read the user's contribution data; private
 contributions only appear as counts). Usage: gen_stats.py [outdir]
@@ -94,186 +94,111 @@ def fmt(n):
     return f"{n:,}"
 
 
+def card(t):
+    W, H = 880, 482
+    o = []
+    a = o.append
+    a(f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" '
+      f'font-family="\'IBM Plex Mono\',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace">')
+    a(f'<rect x="0.5" y="0.5" width="{W-1}" height="{H-1}" fill="{t["bg"]}" stroke="{t["line"]}"/>')
 
-
-# ---------------------------------------------------------------------------
-# Rendering: four cards, each in a dark and a light version
-#   card-numbers  headline numbers
-#   card-clock    every month since the first contribution, one ring per year
-#   card-split    where / when / what (three donuts)
-#   card-decks    the decks on x3beche.github.io, sized by guide count
-# ---------------------------------------------------------------------------
-import math
-
-MONO = "'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace"
-THEMES = {
-    "dark": dict(bg="#0b0d10", rule="#2a2f37", text="#e6e8eb", faint="#8b9098", faint2="#5a6068",
-                 link="#9ab6ff", cell="#15191e", ramp=["#9ab6ff", "#6f86c4", "#4a5a85", "#34405e", "#262e42", "#1b2130"]),
-    "light": dict(bg="#ffffff", rule="#d8dce1", text="#1d2127", faint="#6b717a", faint2="#9aa0a8",
-                  link="#3d63d6", cell="#eef0f3", ramp=["#3d63d6", "#6f8ce0", "#9db0ea", "#c3d0f2", "#dde5f8", "#eef2fb"]),
-}
-
-since = f"{TR_MON[int(first[5:7])-1]} {first[:4]}"
-decks = []
-try:
-    decks = [(n, int(c)) for n, c in re.findall(
-        r'class="archive-name">([^<]+)</span>.*?class="archive-count">(\d+)', html, re.S)]
-except NameError:  # site fetch failed
-    pass
-
-
-class Svg:
-    def __init__(s, w, h, t):
-        s.w, s.h, s.t = w, h, t
-        s.o = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" '
-               f'font-family="{MONO}"><rect width="{w}" height="{h}" fill="{t["bg"]}"/>']
-
-    def tx(s, x, y, txt, col, size=10, anchor="start", ls=0, weight=400):
-        s.o.append(f'<text x="{x:.1f}" y="{y:.1f}" font-size="{size}" letter-spacing="{ls}" text-anchor="{anchor}" '
-                   f'font-weight="{weight}" fill="{col}">{escape(str(txt))}</text>')
-
-    def r(s, x, y, w, h, col, extra=""):
-        s.o.append(f'<rect x="{x:.1f}" y="{y:.1f}" width="{max(w,0):.1f}" height="{max(h,0):.1f}" fill="{col}" {extra}/>')
-
-    def ln(s, x1, y1, x2, y2, col):
-        s.o.append(f'<line x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" stroke="{col}"/>')
-
-    def label(s, x, y, txt, anchor="start"):
-        s.tx(x, y, txt.upper(), s.t["faint"], 9, anchor=anchor, ls=1.6)
-
-    def save(s, path):
-        s.o.append("</svg>")
-        with open(path, "w") as f:
-            f.write("".join(s.o))
-
-
-def arc(cx, cy, r, a0, a1, rw):
-    """Ring segment; angles in degrees, clockwise from 12 o'clock."""
-    def p(rr, a):
-        a = math.radians(a - 90)
-        return cx + rr * math.cos(a), cy + rr * math.sin(a)
-    large = 1 if a1 - a0 > 180 else 0
-    (x0, y0), (x1, y1), (x2, y2), (x3, y3) = p(r, a0), p(r, a1), p(r - rw, a1), p(r - rw, a0)
-    return (f"M{x0:.2f},{y0:.2f} A{r},{r} 0 {large} 1 {x1:.2f},{y1:.2f} L{x2:.2f},{y2:.2f} "
-            f"A{r-rw},{r-rw} 0 {large} 0 {x3:.2f},{y3:.2f} Z")
-
-
-def card_numbers(t):
-    s = Svg(880, 72, t)
-    cells = [(fmt(total), "contributions"), (fmt(this_year), f"in {today.year}"),
-             (fmt(active), "active days"), (f"{longest}d", "longest streak"), (site.get("Rehber", "–"), "guides written")]
-    cw = 878 / len(cells)
-    s.r(1, 1, 878, 70, "none", f'stroke="{t["rule"]}"')
-    for i, (n, l) in enumerate(cells):
-        x = 1 + i * cw
+    # KPI row
+    kpis = [
+        (fmt(total), "contributions", f"since {TR_MON[int(first[5:7])-1]} {first[:4]}"),
+        (fmt(this_year), f"in {today.year}", f"{round(100*per_year[today.year][1]/max(this_year,1))}% in private repos"),
+        (fmt(active), "active days", f"{active_year} in {today.year}"),
+        (str(longest), "day longest streak", f"avg {total/active:.1f} per active day"),
+        (str(busy_n), "busiest day", f"{TR_MON[int(busy_day[5:7])-1]} {int(busy_day[8:])}, {busy_day[:4]}"),
+    ]
+    cw = (W - 48) / len(kpis)
+    for i, (n, l, s) in enumerate(kpis):
+        x = 24 + i * cw
         if i:
-            s.ln(x, 1, x, 71, t["rule"])
-        s.tx(x + 18, 36, n, t["link"] if i == 4 else t["text"], 20, weight=500, ls=-0.4)
-        s.tx(x + 18, 54, l.upper(), t["faint"], 8, ls=1.2)
-    return s
+            a(f'<line x1="{x:.1f}" y1="26" x2="{x:.1f}" y2="96" stroke="{t["line"]}"/>')
+        a(f'<text x="{x+14:.1f}" y="58" font-size="28" font-weight="600" fill="{t["fg"]}">{escape(n)}</text>')
+        a(f'<text x="{x+14:.1f}" y="78" font-size="12" fill="{t["accent"]}">{escape(l)}</text>')
+        a(f'<text x="{x+14:.1f}" y="94" font-size="11" fill="{t["dim"]}">{escape(s)}</text>')
+    a(f'<line x1="24" y1="116" x2="{W-24}" y2="116" stroke="{t["line"]}"/>')
 
+    def label(x, y, s):
+        a(f'<text x="{x}" y="{y}" font-size="11" letter-spacing="1" fill="{t["dim"]}">{escape(s)}</text>')
 
-def card_clock(t):
-    s = Svg(880, 330, t)
-    cx, cy = 168, 166
+    # Yearly stacked bars (public / private)
+    label(24, 142, "CONTRIBUTIONS PER YEAR")
     ys = sorted(per_year)
-    ring = 100 / len(ys)
-    mmax = max(month_tot.values()) or 1
-    for yi, y in enumerate(ys):
-        r = 40 + (yi + 1) * ring
-        for mi in range(12):
-            v = month_tot[f"{y}-{mi+1:02d}"]
-            future = dt.date(y, mi + 1, 1) > today
-            op = (0.15 + 0.85 * (v / mmax) ** 0.5) if v else 1
-            col = t["link"] if v else (t["bg"] if future else t["cell"])
-            s.o.append(f'<path d="{arc(cx, cy, r, mi*30+1, mi*30+29, ring-2)}" fill="{col}" fill-opacity="{op:.2f}"/>')
-    for mi in range(12):
-        a = math.radians(mi * 30 + 15 - 90)
-        s.tx(cx + 152 * math.cos(a), cy + 152 * math.sin(a) + 3, TR_MON[mi][0], t["faint2"], 9, anchor="middle")
-    s.tx(cx, cy - 2, fmt(total), t["text"], 18, anchor="middle", weight=500)
-    s.tx(cx, cy + 14, f"{ys[0]}–{ys[-1]}", t["faint"], 8, anchor="middle", ls=1.2)
-    s.label(360, 40, f"every month since {since}")
-    s.tx(360, 58, f"one ring per year, {ys[0]} inside, {ys[-1]} outside. brighter = more.", t["faint2"], 10)
     ymax = max(sum(v) for v in per_year.values()) or 1
-    for i, y in enumerate(reversed(ys)):
-        yy = 96 + i * 34
-        v = sum(per_year[y])
-        cur = y == today.year
-        s.tx(360, yy, y, t["faint"], 11)
-        s.tx(420, yy, fmt(v), t["link"] if cur else t["text"], 16, weight=500)
-        s.r(500, yy - 6, 300 * v / ymax, 3, t["link"] if cur else t["faint2"])
-        pk = max(range(12), key=lambda m: month_tot[f"{y}-{m+1:02d}"])
-        s.tx(880, yy, f"peak {TR_MON[pk]}", t["faint2"], 9, anchor="end")
-        if i < len(ys) - 1:
-            s.ln(360, yy + 13, 880, yy + 13, t["rule"])
-    return s
+    bx, bw, base, hmax = 24, 46, 270, 100
+    for i, y in enumerate(ys):
+        pub, pri = per_year[y]
+        x = bx + i * (bw + 18)
+        hp, hr = hmax * pub / ymax, hmax * pri / ymax
+        a(f'<rect x="{x}" y="{base-hp-hr:.1f}" width="{bw}" height="{hr:.1f}" fill="{t["accent2"]}"/>')
+        a(f'<rect x="{x}" y="{base-hp:.1f}" width="{bw}" height="{hp:.1f}" fill="{t["accent"]}"/>')
+        a(f'<text x="{x+bw/2}" y="{base-hp-hr-6:.1f}" font-size="11" text-anchor="middle" fill="{t["fg"]}">{fmt(pub+pri)}</text>')
+        a(f'<text x="{x+bw/2}" y="{base+16}" font-size="11" text-anchor="middle" fill="{t["dim"]}">{y}</text>')
+    lx = 24
+    for col, s in ((t["accent"], "public repos"), (t["accent2"], "private repos")):
+        a(f'<rect x="{lx}" y="300" width="9" height="9" fill="{col}"/>')
+        a(f'<text x="{lx+14}" y="309" font-size="11" fill="{t["dim"]}">{s}</text>')
+        lx += 124
+
+    # Last 12 months
+    label(470, 142, "LAST 12 MONTHS")
+    mv = [month_tot[m.strftime("%Y-%m")] for m in months]
+    mmax = max(mv) or 1
+    mw = 28
+    for i, (mm, v) in enumerate(zip(months, mv)):
+        x = 470 + i * (mw + 4)
+        h = max(hmax * v / mmax, 1 if v else 0)
+        a(f'<rect x="{x}" y="{base-hmax}" width="{mw}" height="{hmax}" fill="{t["track"]}"/>')
+        if h:
+            a(f'<rect x="{x}" y="{base-h:.1f}" width="{mw}" height="{h:.1f}" fill="{t["accent"]}"/>')
+        if v == max(mv) and v:
+            a(f'<text x="{x+mw/2}" y="{base-h-6:.1f}" font-size="11" text-anchor="middle" fill="{t["fg"]}">{v}</text>')
+        a(f'<text x="{x+mw/2}" y="{base+16}" font-size="10" text-anchor="middle" fill="{t["dim"]}">{TR_MON[mm.month-1][:1]}</text>')
+    a(f'<line x1="24" y1="326" x2="{W-24}" y2="326" stroke="{t["line"]}"/>')
+
+    # Weekday distribution
+    label(24, 352, "BY WEEKDAY")
+    wmax = max(wd) or 1
+    for i, (n, v) in enumerate(zip(wd_names, wd)):
+        y = 366 + i * 13
+        a(f'<text x="24" y="{y+9}" font-size="10" fill="{t["dim"]}">{n}</text>')
+        a(f'<rect x="58" y="{y}" width="{140*v/wmax:.1f}" height="9" fill="{t["accent"] if v == wmax else t["accent2"]}"/>')
+        a(f'<text x="{64+140*v/wmax:.1f}" y="{y+9}" font-size="10" fill="{t["dim"]}">{v}</text>')
+
+    # Top public repos
+    label(262, 352, "TOP PUBLIC REPOS BY COMMITS")
+    top = repos.most_common(6)
+    rmax = top[0][1] if top else 1
+    for i, (n, v) in enumerate(top):
+        y = 366 + i * 15
+        name = n if len(n) <= 24 else n[:23] + "…"
+        a(f'<text x="262" y="{y+9}" font-size="11" fill="{t["fg"]}">{escape(name)}</text>')
+        a(f'<rect x="440" y="{y+1}" width="{110*v/rmax:.1f}" height="8" fill="{t["accent"]}"/>')
+        a(f'<text x="{446+110*v/rmax:.1f}" y="{y+9}" font-size="10" fill="{t["dim"]}">{v}</text>')
+
+    # Knowledge base
+    if site:
+        label(620, 352, "X3BECHE.GITHUB.IO")
+        rows = [(site.get("Deck"), "decks"), (site.get("Rehber"), "guides"),
+                (site.get("Bölüm"), "sections"), (site.get("Kelime"), "words")]
+        for i, (n, l) in enumerate(r for r in rows if r[0]):
+            x, y = 620 + (i % 2) * 120, 386 + (i // 2) * 44
+            a(f'<text x="{x}" y="{y}" font-size="22" font-weight="600" fill="{t["fg"]}">{escape(n)}</text>')
+            a(f'<text x="{x}" y="{y+16}" font-size="11" fill="{t["accent"]}">{l}</text>')
+
+    a(f'<text x="{W-24}" y="{H-12}" font-size="9" text-anchor="end" fill="{t["dim"]}">updated {today.isoformat()}</text>')
+    a("</svg>")
+    return "".join(o)
 
 
-def card_split(t):
-    s = Svg(880, 230, t)
-    pal = t["ramp"]
-
-    def donut(cx, title, parts, center, sub):
-        tot = sum(v for _, v in parts) or 1
-        a0 = 0
-        for i, (n, v) in enumerate(parts):
-            a1 = a0 + 360 * v / tot
-            if v:
-                s.o.append(f'<path d="{arc(cx, 112, 70, a0 + 0.6, a1 - 0.6, 14)}" fill="{pal[min(i, len(pal)-1)]}"/>')
-            a0 = a1
-        s.tx(cx, 108, center, t["text"], 20, anchor="middle", weight=500)
-        s.tx(cx, 124, sub, t["faint"], 8, anchor="middle", ls=1.2)
-        s.label(cx, 14, title, anchor="middle")
-        s.tx(cx, 212, "  ".join(f"{n} {round(100*v/tot)}%" for n, v in parts[:3]), t["faint2"], 9, anchor="middle")
-
-    pub = sum(v[0] for v in per_year.values())
-    pri = sum(v[1] for v in per_year.values())
-    donut(150, "where", [("private", pri), ("public", pub)], fmt(total), "CONTRIBUTIONS")
-    donut(440, "when", sorted(zip(wd_names, wd), key=lambda x: -x[1]), wd_names[wd.index(max(wd))].upper(), "BUSIEST DAY")
-    if decks:
-        top = sorted(decks, key=lambda x: -x[1])
-        donut(730, "what I write", [(n.replace("-deck", ""), c) for n, c in top[:5]] + [("other", sum(c for _, c in top[5:]))],
-              site.get("Rehber", "–"), "GUIDES")
-    return s
-
-
-def card_decks(t):
-    s = Svg(880, 250, t)
-    items = sorted(decks, key=lambda x: -x[1])
-
-    def split(items, x, y, w, h):
-        if len(items) == 1:
-            return [(items[0], x, y, w, h)]
-        tot = sum(v for _, v in items)
-        acc, half = 0, []
-        for it in items:
-            if acc + it[1] > tot / 2 and half:
-                break
-            half.append(it)
-            acc += it[1]
-        rest = items[len(half):]
-        if w >= h:
-            w1 = w * acc / tot
-            return split(half, x, y, w1, h) + split(rest, x + w1, y, w - w1, h)
-        h1 = h * acc / tot
-        return split(half, x, y, w, h1) + split(rest, x, y + h1, w, h - h1)
-
-    s.label(0, 14, f"what I write · {site.get('Rehber', '–')} guides in {len(decks)} decks on x3beche.github.io")
-    cmax = items[0][1]
-    for (n, c), x, y, w, h in split(items, 0, 26, 880, 222):
-        op = 0.18 + 0.7 * c / cmax
-        s.r(x + 1, y + 1, w - 2, h - 2, t["link"], f'fill-opacity="{op:.2f}"')
-        if w > 84 and h > 28:
-            dark_ink = op > 0.6
-            s.tx(x + 8, y + 18, n.replace("-deck", ""), t["bg"] if dark_ink else t["text"], 10, weight=500)
-            s.tx(x + 8, y + 31, c, t["bg"] if dark_ink else t["faint"], 9)
-    return s
-
-
-CARDS = {"numbers": card_numbers, "clock": card_clock, "split": card_split}
-if decks:
-    CARDS["decks"] = card_decks
-for theme, t in THEMES.items():
-    for name, fn in CARDS.items():
-        fn(t).save(os.path.join(OUT, f"card-{name}-{theme}.svg"))
-print(f"total={total} year={this_year} active={active} longest={longest} decks={len(decks)} cards={list(CARDS)}")
+THEMES = {
+    # colours of x3beche.github.io (assets/main.css)
+    "dark": dict(bg="#0b0d10", line="#2a2f37", fg="#e6e8eb", dim="#8b9098", accent="#9ab6ff", accent2="#3a4766", track="#15191e"),
+    "light": dict(bg="#ffffff", line="#d8dce1", fg="#1d2127", dim="#6b717a", accent="#3d63d6", accent2="#b9c7ef", track="#f1f3f6"),
+}
+for name, t in THEMES.items():
+    with open(os.path.join(OUT, f"stats-{name}.svg"), "w") as f:
+        f.write(card(t))
+print(f"total={total} year={this_year} active={active} streak={current}/{longest} repos={len(repos)} site={site}")
