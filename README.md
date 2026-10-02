@@ -11,5 +11,5 @@ my Turkish technical decks (embedded Linux, kernel, networking, AI, …) are on
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/stats-dark.svg">
-  <img alt="GitHub katkı istatistikleri" src="assets/stats-light.svg">
+  <img alt="GitHub contribution stats" src="assets/stats-light.svg">
 </picture>

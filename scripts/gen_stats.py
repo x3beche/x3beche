@@ -73,7 +73,7 @@ month_tot = collections.Counter(d[:7] for d in [])
 for d, v in days.items():
     month_tot[d[:7]] += v
 
-wd_names = ["Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"]
+wd_names = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 wd = [0] * 7
 for d, v in days.items():
     wd[dt.date.fromisoformat(d).weekday()] += v
@@ -87,11 +87,11 @@ try:
 except Exception as e:  # site down: card renders without the site row
     print("site stats skipped:", e, file=sys.stderr)
 
-TR_MON = ["Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara"]
+TR_MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
 
 def fmt(n):
-    return f"{n:,}".replace(",", ".")
+    return f"{n:,}"
 
 
 def card(t):
@@ -104,11 +104,11 @@ def card(t):
 
     # KPI row
     kpis = [
-        (fmt(total), "katkı", f"{TR_MON[int(first[5:7])-1]} {first[:4]}'ten beri"),
-        (fmt(this_year), f"{today.year} katkısı", f"%{round(100*per_year[today.year][1]/max(this_year,1))} gizli repolarda"),
-        (fmt(active), "aktif gün", f"{today.year}'te {active_year} gün"),
-        (str(longest), "gün en uzun seri", f"aktif günde ort. {total/active:.1f}"),
-        (str(busy_n), "en yoğun gün", f"{int(busy_day[8:])} {TR_MON[int(busy_day[5:7])-1]} {busy_day[:4]}"),
+        (fmt(total), "contributions", f"since {TR_MON[int(first[5:7])-1]} {first[:4]}"),
+        (fmt(this_year), f"in {today.year}", f"{round(100*per_year[today.year][1]/max(this_year,1))}% in private repos"),
+        (fmt(active), "active days", f"{active_year} in {today.year}"),
+        (str(longest), "day longest streak", f"avg {total/active:.1f} per active day"),
+        (str(busy_n), "busiest day", f"{TR_MON[int(busy_day[5:7])-1]} {int(busy_day[8:])}, {busy_day[:4]}"),
     ]
     cw = (W - 48) / len(kpis)
     for i, (n, l, s) in enumerate(kpis):
@@ -124,7 +124,7 @@ def card(t):
         a(f'<text x="{x}" y="{y}" font-size="11" letter-spacing="1" fill="{t["dim"]}">{escape(s)}</text>')
 
     # Yearly stacked bars (public / private)
-    label(24, 142, "YILLIK KATKI")
+    label(24, 142, "CONTRIBUTIONS PER YEAR")
     ys = sorted(per_year)
     ymax = max(sum(v) for v in per_year.values()) or 1
     bx, bw, base, hmax = 24, 46, 270, 100
@@ -137,13 +137,13 @@ def card(t):
         a(f'<text x="{x+bw/2}" y="{base-hp-hr-6:.1f}" font-size="11" text-anchor="middle" fill="{t["fg"]}">{fmt(pub+pri)}</text>')
         a(f'<text x="{x+bw/2}" y="{base+16}" font-size="11" text-anchor="middle" fill="{t["dim"]}">{y}</text>')
     lx = 24
-    for col, s in ((t["accent"], "açık repo"), (t["accent2"], "gizli repo")):
+    for col, s in ((t["accent"], "public repos"), (t["accent2"], "private repos")):
         a(f'<rect x="{lx}" y="300" width="9" height="9" fill="{col}"/>')
         a(f'<text x="{lx+14}" y="309" font-size="11" fill="{t["dim"]}">{s}</text>')
-        lx += 100
+        lx += 124
 
     # Last 12 months
-    label(470, 142, "SON 12 AY")
+    label(470, 142, "LAST 12 MONTHS")
     mv = [month_tot[m.strftime("%Y-%m")] for m in months]
     mmax = max(mv) or 1
     mw = 28
@@ -159,7 +159,7 @@ def card(t):
     a(f'<line x1="24" y1="326" x2="{W-24}" y2="326" stroke="{t["line"]}"/>')
 
     # Weekday distribution
-    label(24, 352, "HAFTANIN GÜNÜ")
+    label(24, 352, "BY WEEKDAY")
     wmax = max(wd) or 1
     for i, (n, v) in enumerate(zip(wd_names, wd)):
         y = 366 + i * 13
@@ -168,7 +168,7 @@ def card(t):
         a(f'<text x="{64+140*v/wmax:.1f}" y="{y+9}" font-size="10" fill="{t["dim"]}">{v}</text>')
 
     # Top public repos
-    label(262, 352, "EN ÇOK COMMIT (AÇIK REPOLAR)")
+    label(262, 352, "TOP PUBLIC REPOS BY COMMITS")
     top = repos.most_common(6)
     rmax = top[0][1] if top else 1
     for i, (n, v) in enumerate(top):
@@ -181,14 +181,14 @@ def card(t):
     # Knowledge base
     if site:
         label(620, 352, "X3BECHE.GITHUB.IO")
-        rows = [(site.get("Deck"), "deck"), (site.get("Rehber"), "rehber"),
-                (site.get("Bölüm"), "bölüm"), (site.get("Kelime"), "kelime")]
+        rows = [(site.get("Deck"), "decks"), (site.get("Rehber"), "guides"),
+                (site.get("Bölüm"), "sections"), (site.get("Kelime"), "words")]
         for i, (n, l) in enumerate(r for r in rows if r[0]):
             x, y = 620 + (i % 2) * 120, 386 + (i // 2) * 44
             a(f'<text x="{x}" y="{y}" font-size="22" font-weight="600" fill="{t["fg"]}">{escape(n)}</text>')
             a(f'<text x="{x}" y="{y+16}" font-size="11" fill="{t["accent"]}">{l}</text>')
 
-    a(f'<text x="{W-24}" y="{H-12}" font-size="9" text-anchor="end" fill="{t["dim"]}">güncellendi {today.isoformat()}</text>')
+    a(f'<text x="{W-24}" y="{H-12}" font-size="9" text-anchor="end" fill="{t["dim"]}">updated {today.isoformat()}</text>')
     a("</svg>")
     return "".join(o)
 
