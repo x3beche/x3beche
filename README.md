@@ -13,3 +13,7 @@ my Turkish technical decks (embedded Linux, kernel, networking, AI, …) are on
   <source media="(prefers-color-scheme: dark)" srcset="assets/stats-dark.svg">
   <img alt="GitHub contribution stats" src="assets/stats-light.svg">
 </picture>
+
+<!-- Profile-view counter below is invisible: it just registers the visit, the
+     number itself is baked into the stats card by scripts/gen_stats.py. -->
+<img src="https://komarev.com/ghpvc/?username=x3beche" width="1" height="1" alt="">

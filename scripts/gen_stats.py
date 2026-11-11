@@ -90,6 +90,36 @@ except Exception as e:  # site down: card renders without the site row
 
 TR_MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
+VIEWS_URL = f"https://komarev.com/ghpvc/?username={USER}"
+
+
+def profile_views():
+    """Count from github-profile-views-counter (komarev.com).
+
+    The badge is never shown on the profile, so this request is also what keeps
+    the counter alive; on failure fall back to the number already in the card.
+    """
+    try:
+        req = urllib.request.Request(VIEWS_URL, headers={"User-Agent": USER})
+        svg = urllib.request.urlopen(req, timeout=30).read().decode()
+        nums = re.findall(r">([\d,]+)</text>", svg)
+        if nums:
+            return int(nums[-1].replace(",", ""))
+        print("views: no count in badge", file=sys.stderr)
+    except Exception as e:
+        print("views skipped:", e, file=sys.stderr)
+    try:
+        with open(os.path.join(OUT, "stats-dark.svg")) as f:
+            m = re.search(r">([\d,]+)</text><text[^>]*>profile views<", f.read())
+        if m:
+            return int(m.group(1).replace(",", ""))
+    except OSError:
+        pass
+    return None
+
+
+views = profile_views()
+
 
 def fmt(n):
     return f"{n:,}"
@@ -106,11 +136,13 @@ def card(t):
     # KPI row
     kpis = [
         (fmt(total), "contributions", f"since {TR_MON[int(first[5:7])-1]} {first[:4]}"),
-        (fmt(this_year), f"in {today.year}", f"{round(100*per_year[today.year][1]/max(this_year,1))}% in private repos"),
+        (fmt(this_year), f"in {today.year}", f"{round(100*per_year[today.year][1]/max(this_year,1))}% private repos"),
         (fmt(active), "active days", f"{active_year} in {today.year}"),
-        (str(longest), "day longest streak", f"avg {total/active:.1f} per active day"),
+        (str(longest), "longest streak", f"{total/active:.1f} per active day"),
         (str(busy_n), "busiest day", f"{TR_MON[int(busy_day[5:7])-1]} {int(busy_day[8:])}, {busy_day[:4]}"),
     ]
+    if views:  # no "0 profile views" on a fresh counter; the row just grows to 6
+        kpis.append((fmt(views), "profile views", "all time"))
     cw = (W - 48) / len(kpis)
     for i, (n, l, s) in enumerate(kpis):
         x = 24 + i * cw
@@ -202,4 +234,4 @@ THEMES = {
 for name, t in THEMES.items():
     with open(os.path.join(OUT, f"stats-{name}.svg"), "w") as f:
         f.write(card(t))
-print(f"total={total} year={this_year} active={active} streak={current}/{longest} repos={len(repos)} site={site}")
+print(f"total={total} year={this_year} active={active} streak={current}/{longest} repos={len(repos)} views={views} site={site}")
