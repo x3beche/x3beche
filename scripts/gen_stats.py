@@ -110,7 +110,7 @@ def profile_views():
         print("views skipped:", e, file=sys.stderr)
     try:
         with open(os.path.join(OUT, "stats-dark.svg")) as f:
-            m = re.search(r">([\d,]+)</text><text[^>]*>profile views<", f.read())
+            m = re.search(r"([\d,]+) profile views<", f.read())
         if m:
             return int(m.group(1).replace(",", ""))
     except OSError:
@@ -219,11 +219,11 @@ def card(t):
             a(f'<text x="{x}" y="{y}" font-size="22" font-weight="600" fill="{t["fg"]}">{escape(n)}</text>')
             a(f'<text x="{x}" y="{y+16}" font-size="11" fill="{t["accent"]}">{l}</text>')
 
-    # footer: build stamp left, profile views right (no badge anywhere on the profile)
-    a(f'<text x="24" y="{H-12}" font-size="9" fill="{t["dim"]}">updated {today.isoformat()}</text>')
+    # footer: build stamp, profile views right next to it, same type
+    stamp = f"updated {today.isoformat()}"
     if views is not None:
-        a(f'<text x="{W-24}" y="{H-12}" font-size="12" text-anchor="end" fill="{t["dim"]}">'
-          f'<tspan font-size="16" font-weight="600" fill="{t["accent"]}">{fmt(views)}</tspan> profile views</text>')
+        stamp += f"  ·  {fmt(views)} profile views"
+    a(f'<text x="24" y="{H-12}" font-size="9" fill="{t["dim"]}">{stamp}</text>')
     a("</svg>")
     return "".join(o)
 
