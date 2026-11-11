@@ -136,13 +136,11 @@ def card(t):
     # KPI row
     kpis = [
         (fmt(total), "contributions", f"since {TR_MON[int(first[5:7])-1]} {first[:4]}"),
-        (fmt(this_year), f"in {today.year}", f"{round(100*per_year[today.year][1]/max(this_year,1))}% private repos"),
+        (fmt(this_year), f"in {today.year}", f"{round(100*per_year[today.year][1]/max(this_year,1))}% in private repos"),
         (fmt(active), "active days", f"{active_year} in {today.year}"),
-        (str(longest), "longest streak", f"{total/active:.1f} per active day"),
+        (str(longest), "day longest streak", f"avg {total/active:.1f} per active day"),
         (str(busy_n), "busiest day", f"{TR_MON[int(busy_day[5:7])-1]} {int(busy_day[8:])}, {busy_day[:4]}"),
     ]
-    if views:  # no "0 profile views" on a fresh counter; the row just grows to 6
-        kpis.append((fmt(views), "profile views", "all time"))
     cw = (W - 48) / len(kpis)
     for i, (n, l, s) in enumerate(kpis):
         x = 24 + i * cw
@@ -221,7 +219,11 @@ def card(t):
             a(f'<text x="{x}" y="{y}" font-size="22" font-weight="600" fill="{t["fg"]}">{escape(n)}</text>')
             a(f'<text x="{x}" y="{y+16}" font-size="11" fill="{t["accent"]}">{l}</text>')
 
-    a(f'<text x="{W-24}" y="{H-12}" font-size="9" text-anchor="end" fill="{t["dim"]}">updated {today.isoformat()}</text>')
+    # footer: build stamp left, profile views right (no badge anywhere on the profile)
+    a(f'<text x="24" y="{H-12}" font-size="9" fill="{t["dim"]}">updated {today.isoformat()}</text>')
+    if views is not None:
+        a(f'<text x="{W-24}" y="{H-12}" font-size="12" text-anchor="end" fill="{t["dim"]}">'
+          f'<tspan font-size="16" font-weight="600" fill="{t["accent"]}">{fmt(views)}</tspan> profile views</text>')
     a("</svg>")
     return "".join(o)
 
